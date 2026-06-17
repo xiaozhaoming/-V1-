@@ -1,0 +1,6 @@
+{
+  "name": "小红书静态图去重工具",
+  "description": "专业级小红书静态图片元数据一键深度清理去重工具。内置 Gemini AI 视觉与文本关联性分析，展示高危 EXIF、XMP 和 PNG 文本块敏感参数字段。支持前端 Canvas 画布高保真重组重叠技术批量重绘去污，保护版权、防止平台机制识别，为您的小红书爆款内容运营保驾护航。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
