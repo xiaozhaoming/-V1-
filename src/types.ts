@@ -21,10 +21,20 @@ export interface ImageFileState {
   clientParsedMetadata: Record<string, string>;
   hasClientDetectedAi: boolean;
   clientAiSummary: string;
+  hasExif?: boolean;
+  hasXmp?: boolean;
+  hasC2pa?: boolean;
+  hasPngText?: boolean;
   
   // Gemini Deep Audit
   riskLevel: RiskLevel;
   auditFields: MetadataField[];
+  aiTraces?: {
+    waxiness: "low" | "medium" | "high";
+    hands: "low" | "medium" | "high";
+    background: "low" | "medium" | "high";
+    text: "low" | "medium" | "high";
+  };
   summary: string;
   auditError?: string;
   

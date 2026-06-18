@@ -42,6 +42,10 @@ export async function scanImageMetadata(file: File): Promise<{
   metadata: Record<string, string>;
   hasAiIndicators: boolean;
   summary: string;
+  hasExif: boolean;
+  hasXmp: boolean;
+  hasC2pa: boolean;
+  hasPngText: boolean;
 }> {
   const metadata: Record<string, string> = {};
   let hasAiIndicators = false;
@@ -49,10 +53,47 @@ export async function scanImageMetadata(file: File): Promise<{
   const sensitiveExifDetails: string[] = [];
   let summary = "";
 
+  let hasExif = false;
+  let hasXmp = false;
+  let hasC2pa = false;
+  let hasPngText = false;
+
   try {
     const arrayBuffer = await file.arrayBuffer();
+    const uint8 = new Uint8Array(arrayBuffer);
     
-    // 1. Pass to ExifReader first
+    // 1. Binary stream scanning for C2PA content credentials or JUMBF signatures
+    const minLen = uint8.length;
+    const headerSlice = uint8.slice(0, Math.min(minLen, 50000));
+    const footerSlice = uint8.slice(Math.max(0, minLen - 50000));
+    
+    const binaryToString = (slice: Uint8Array) => {
+      let str = "";
+      for (let i = 0; i < slice.length; i += 5000) {
+        str += String.fromCharCode(...slice.slice(i, i + 5000));
+      }
+      return str;
+    };
+    
+    const headerStr = binaryToString(headerSlice);
+    const footerStr = binaryToString(footerSlice);
+    const fullSearchStr = (headerStr + " " + footerStr).toLowerCase();
+
+    if (
+      fullSearchStr.includes("c2pa") || 
+      fullSearchStr.includes("jumbf") || 
+      fullSearchStr.includes("content credentials") || 
+      fullSearchStr.includes("prov:manifest")
+    ) {
+      hasC2pa = true;
+      metadata["C2PA Content Credentials"] = "已发现安全追溯凭证 / 包含数字版权签署指纹";
+    }
+
+    if (fullSearchStr.includes("xmpmeta") || fullSearchStr.includes("adobe:ns:meta") || fullSearchStr.includes("x:xmptg")) {
+      hasXmp = true;
+    }
+
+    // 2. Pass to ExifReader first
     let tags: any = {};
     try {
       tags = ExifReader.load(arrayBuffer);
@@ -60,11 +101,19 @@ export async function scanImageMetadata(file: File): Promise<{
       console.warn("ExifReader load failed (continuing with custom manual parse):", e);
     }
 
-    // 2. Process ExifReader tags
+    // 3. Process ExifReader tags
     const aiKeywords = [
       "stable diffusion", "stablediffusion", "midjourney", "comfyui", "novelai", "dall-e",
       "firefly", "generative", "ai generator", "stealth", "playground", "fooocus", "prompt", "workflow"
     ];
+
+    const tagsKeys = Object.keys(tags);
+    if (tagsKeys.length > 0) {
+      const hasOnlyFileDetails = tagsKeys.every(k => k === "FileType" || k === "File Size" || k === "Image Height" || k === "Image Width");
+      if (!hasOnlyFileDetails) {
+        hasExif = true;
+      }
+    }
 
     for (const [tagName, tagData] of Object.entries(tags)) {
       if (!tagData) continue;
@@ -81,6 +130,10 @@ export async function scanImageMetadata(file: File): Promise<{
 
       const lowerTag = tagName.toLowerCase();
       const lowerVal = rawVal.toLowerCase();
+
+      if (lowerTag.includes("xmp")) {
+        hasXmp = true;
+      }
 
       // Check if tag is AI related
       const isAi = aiKeywords.some(kw => lowerVal.includes(kw) || lowerTag.includes(kw));
@@ -118,9 +171,8 @@ export async function scanImageMetadata(file: File): Promise<{
       }
     }
 
-    // 3. Fallback/Double Check: Custom manual scan particularly for raw PNG text chunks
+    // 4. Fallback/Double Check: Custom manual scan particularly for raw PNG text chunks
     // to capture key values that might not map under standard tag categories.
-    const uint8 = new Uint8Array(arrayBuffer);
     if (file.type === "image/png" || file.name.endsWith(".png")) {
       let pos = 8;
       const len = uint8.length;
@@ -131,6 +183,7 @@ export async function scanImageMetadata(file: File): Promise<{
         if (pos + chunkLength > len) break;
 
         if (chunkType === "tEXt" || chunkType === "iTXt" || chunkType === "zTXt") {
+          hasPngText = true;
           let key = "";
           let keyEnd = pos;
           for (let i = pos; i < pos + chunkLength; i++) {
@@ -181,17 +234,25 @@ export async function scanImageMetadata(file: File): Promise<{
   const uniqueSensitiveExifs = Array.from(new Set(sensitiveExifDetails));
 
   if (hasAiIndicators) {
-    summary = `🔍 极高判定风险！读取到生成式 AI 原生特有签名字段: ${uniqueAiDetails.join("、")}。此类元数据会百分之百被小红书和抖音等平台检索到，进而触发“AI生成标识”强制打标，或者判定为低质/非原创内容。建议立即执行物理脱敏重绘！`;
+    summary = `🔍 极高判定风险！读取到生成式 AI 原生特有签名字段: ${uniqueAiDetails.join("、")}。此类元数据会百分之百被小红书和抖音等平台检测到，进而触发“AI生成标识”强制打标，或者判定为低质/非原创内容。建议立即执行物理脱敏重绘！`;
   } else if (uniqueSensitiveExifs.length > 0) {
     const keys = Object.keys(metadata);
     summary = `⚠️ 中等安全风险！未检测到 AIGC 原生特定参数，但包含 ${uniqueSensitiveExifs.join("及")} (已解析标签数量: ${keys.length} 项，含设备或软件标识)。平台算法极易据此交叉匹配，从而判定为设备搬运号或二创剪辑。必须进行首尾脱敏清除。`;
   } else {
-    summary = `✨ 极度纯澈安全！此图片文件头已实现物理净化无垢，未在底层检测到任何 EXIF 标头、XMP 容器、软件渲染记录或 GPS 空间戳，可放心发布。`;
+    if (hasExif || hasXmp || hasC2pa || hasPngText) {
+      summary = `⚠️ 低风险提示：检测到普通图片标头/空指纹记录。虽未包含 AI 特征，但保留的元数据信息可能暴露制作足迹，仍建议执行物理净化。`;
+    } else {
+      summary = `✨ 极度纯澈安全！此图片文件头已实现物理净化无垢，未在底层检测到任何 EXIF 标头、XMP 容器、软件渲染记录或 GPS 空间戳，可放心发布。`;
+    }
   }
 
   return {
     metadata,
     hasAiIndicators,
     summary,
+    hasExif,
+    hasXmp,
+    hasC2pa,
+    hasPngText,
   };
 }

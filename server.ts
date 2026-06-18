@@ -3,8 +3,6 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
-import fs from "fs";
-import JSZip from "jszip";
 
 dotenv.config();
 
@@ -76,13 +74,19 @@ ${JSON.stringify(parsedMetadata || {}, null, 2)}
       "risk_desc": "说明此画面特征为何带来了风险（例如：极易触发平台的AI生图机器过滤与限流打标机制）"
     }
   ],
+  "ai_traces": {
+    "waxiness": "low" | "medium" | "high",
+    "hands": "low" | "medium" | "high",
+    "background": "low" | "medium" | "high",
+    "text": "low" | "medium" | "high"
+  },
   "summary": "一句简短直白的小红书发布风险陈述（100字以内，重点结合画面AI质感给予创作者建议）"
 }
 
 风险判定指南：
 1. 如果该图片存在 prompt, seed, workflow 等 AI 生图特定元数据，或者你通过视觉观察，发现画面具有【极度明显的 AI 扭曲残次或典型 AIGC 质感】，risk_level 必须判定为 "high"（高风险）。
-2. 如果图片没有任何 AI 生图特有的元数据，但具有部分数码修图后留下的元数据（如 Photoshop, Lightroom）或普通设备拍摄信息，画面无大碍，判定为 "medium"（中风险，具有通用元数据，建议清除再发）。
-3. 如果前端无危险字段，且你作为视觉系统审计画面未发现任何违和的 AI 精细渐变、无脑滤纸、或 AI 畸变特写，则判定为 "clean"（干净，可放心直发）。
+2. 如果图片没有任何 AI 生图特有的元数据，但具有部分数码修图后留下的元数据（如 Photoshop, Lightroom）或普通设备拍摄信息，画面无大碍，判定为 "medium" (中风险，具有通用元数据，建议清除再发)。
+3. 如果前端无危险字段，且你作为视觉系统审计画面未发现任何违和的 AI 精细渐变、无脑滤纸、或 AI 畸变特写，则判定为 "clean" (干净，可放心直发)。
 
 请只返回此 JSON 结构，确保字段准确且可以直接被 JSON.parse。`;
 
@@ -148,6 +152,12 @@ ${JSON.stringify(parsedMetadata || {}, null, 2)}
               risk_desc: "由于模型输出解析异常，建议安全起见一键清除所有底层二进制元数据。"
             }
           ],
+          ai_traces: {
+            waxiness: "low",
+            hands: "low",
+            background: "low",
+            text: "low"
+          },
           summary: responseText.slice(0, 150) || "AI 识别到潜在安全字段，建议一键清理去重后再行发布。"
         });
       }
@@ -168,52 +178,6 @@ ${JSON.stringify(parsedMetadata || {}, null, 2)}
       return res.status(500).json({
         error: errMsg
       });
-    }
-  });
-
-  // Helper function to recursively read files and folders for project packaging
-  async function addDirToZip(zipInstance: JSZip, currentPath: string, relativePath: string = "") {
-    const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
-    for (const entry of entries) {
-      const entryName = entry.name;
-      // Exclude heavy runtime artifacts and lock files for clean package
-      if (
-        entryName === "node_modules" ||
-        entryName === "dist" ||
-        entryName === ".git" ||
-        entryName === ".DS_Store" ||
-        entryName === "package-lock.json" ||
-        entryName === ".env"
-      ) {
-        continue;
-      }
-      const fullPath = path.join(currentPath, entryName);
-      const relSubPath = relativePath ? path.join(relativePath, entryName) : entryName;
-      if (entry.isDirectory()) {
-        const subZip = zipInstance.folder(relSubPath);
-        if (subZip) {
-          await addDirToZip(zipInstance, fullPath, relSubPath);
-        }
-      } else {
-        const content = await fs.promises.readFile(fullPath);
-        zipInstance.file(relSubPath, content);
-      }
-    }
-  }
-
-  // API endpoint to package entire full-stack project into a ZIP archive
-  app.get("/api/download-source-zip", async (req, res) => {
-    try {
-      const zip = new JSZip();
-      await addDirToZip(zip, process.cwd());
-      const zipBuffer = await zip.generateAsync({ type: "nodebuffer" });
-      
-      res.setHeader("Content-Type", "application/zip");
-      res.setHeader("Content-Disposition", "attachment; filename=redbook_image_purifier_source.zip");
-      res.send(zipBuffer);
-    } catch (err: any) {
-      console.error("Failed to generate project source code ZIP:", err);
-      res.status(500).json({ error: "一键打包源码包发生故障: " + err.message });
     }
   });
 
