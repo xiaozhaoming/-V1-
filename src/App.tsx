@@ -1540,276 +1540,276 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Right Column Column containing report and details */}
-                  <div className="lg:col-span-7 flex flex-col gap-6">
+                </div>
 
-                    {/* Purification Comparison Report */}
-                                   {/* 2. Consolidated Core Diagnostic & Platform Security Audit */}
-                    <div className="space-y-4">
-                      <h4 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
-                        <span className="flex items-center gap-1.5">
-                          <span className="w-1.5 h-3.5 bg-rose-500 rounded-full" />
-                          <span>底层物理多维指纹检测与避障深度诊断 (Security Audit & Anti-Risk Guide)</span>
+                {/* Right Column Column containing report and details */}
+                <div className="lg:col-span-7 flex flex-col gap-6">
+
+                  {/* Purification Comparison Report */}
+                                 {/* 2. Consolidated Core Diagnostic & Platform Security Audit */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-3.5 bg-rose-500 rounded-full" />
+                        <span>底层物理多维指纹检测与避障深度诊断 (Security Audit & Anti-Risk Guide)</span>
+                      </span>
+                      {!isDone && riskCards.length > 0 && (
+                        <span className="text-[10px] bg-rose-50 border border-rose-100 text-rose-600 px-2 py-0.5 rounded font-extrabold font-mono animate-pulse">
+                          检测到 {riskCards.length} 处敏感特征暴露
                         </span>
-                        {!isDone && riskCards.length > 0 && (
-                          <span className="text-[10px] bg-rose-50 border border-rose-100 text-rose-600 px-2 py-0.5 rounded font-extrabold font-mono animate-pulse">
-                            检测到 {riskCards.length} 处敏感特征暴露
-                          </span>
-                        )}
-                      </h4>
+                      )}
+                    </h4>
 
-                      {isDone ? (
-                        <div className="bg-emerald-50/50 border border-emerald-200/60 p-5 rounded-2xl text-slate-700 flex gap-4 text-left animate-in fade-in slide-in-from-bottom-2 duration-300 font-sans">
-                          <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 flex-shrink-0 animate-bounce">
-                            <ShieldCheck className="w-5 h-5" />
-                          </div>
-                          <div>
-                            <span className="font-extrabold block text-emerald-950 text-xs mb-1">✨ 一键防封物理清洗成功（底层配置已安全 100% 净化）</span>
-                            <p className="leading-relaxed text-slate-600 text-2xs font-medium">
-                              <strong>防封诊断评估：绿灯通行状态 (Green Pass)</strong>。当前图片的相机物理 EXIF/镜头指纹、快门计数值、地理定位 GPS 卫星轨迹、修图软件二创依赖链（Photoshop/Lightroom/ComfyUI 等容器信息），已被 1500w 级高保真画布像素流碎屏重绘，100% 阻断了各大平台风控算法的底层追溯关联。
-                            </p>
-                          </div>
+                    {isDone ? (
+                      <div className="bg-emerald-50/50 border border-emerald-200/60 p-5 rounded-2xl text-slate-700 flex gap-4 text-left animate-in fade-in slide-in-from-bottom-2 duration-300 font-sans">
+                        <div className="w-8 h-8 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 flex-shrink-0 animate-bounce">
+                          <ShieldCheck className="w-5 h-5" />
                         </div>
-                      ) : riskCards.length === 0 ? (
-                        <div className="border border-dashed border-slate-200 bg-slate-50/40 p-6 rounded-2xl text-2xs text-slate-400 text-center italic font-medium font-sans font-sans">
-                          🟢 绿灯通关：本张图片未解析出任何导致社交平台判定设备关联或多机发布风控的高危敏感二进制字段，基础状态安全。
+                        <div>
+                          <span className="font-extrabold block text-emerald-950 text-xs mb-1">✨ 一键防封物理清洗成功（底层配置已安全 100% 净化）</span>
+                          <p className="leading-relaxed text-slate-600 text-2xs font-medium">
+                            <strong>防封诊断评估：绿灯通行状态 (Green Pass)</strong>。当前图片的相机物理 EXIF/镜头指纹、快门计数值、地理定位 GPS 卫星轨迹、修图软件二创依赖链（Photoshop/Lightroom/ComfyUI 等容器信息），已被 1500w 级高保真画布像素流碎屏重绘，100% 阻断了各大平台风控算法的底层追溯关联。
+                          </p>
                         </div>
-                      ) : null}
+                      </div>
+                    ) : riskCards.length === 0 ? (
+                      <div className="border border-dashed border-slate-200 bg-slate-50/40 p-6 rounded-2xl text-2xs text-slate-400 text-center italic font-medium font-sans">
+                        🟢 绿灯通关：本张图片未解析出任何导致社交平台判定设备关联或多机发布风控的高危敏感二进制字段，基础状态安全。
+                      </div>
+                    ) : null}
 
-                      {/* Unified 4 Core Pillars Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {(() => {
-                          const meta = selectedImageForView.clientParsedMetadata || {};
-                          const hasExif = !!selectedImageForView.hasExif;
-                          const hasXmp = !!selectedImageForView.hasXmp;
-                          const hasC2pa = !!selectedImageForView.hasC2pa;
-                          const hasPngText = !!selectedImageForView.hasPngText;
+                    {/* Unified 4 Core Pillars List (One column stack for scannability on the right) */}
+                    <div className="flex flex-col gap-4">
+                      {(() => {
+                        const meta = selectedImageForView.clientParsedMetadata || {};
+                        const hasExif = !!selectedImageForView.hasExif;
+                        const hasXmp = !!selectedImageForView.hasXmp;
+                        const hasC2pa = !!selectedImageForView.hasC2pa;
+                        const hasPngText = !!selectedImageForView.hasPngText;
 
-                          // Helper to separate metadata entries into groups
-                          const exifEntries: Array<[string, string]> = [];
-                          const gpsEntries: Array<[string, string]> = [];
-                          const c2paEntries: Array<[string, string]> = [];
-                          const xmpEntries: Array<[string, string]> = [];
-                          const pngTextEntries: Array<[string, string]> = [];
-                          const leftoverEntries: Array<[string, string]> = [];
+                        // Helper to separate metadata entries into groups
+                        const exifEntries: Array<[string, string]> = [];
+                        const gpsEntries: Array<[string, string]> = [];
+                        const c2paEntries: Array<[string, string]> = [];
+                        const xmpEntries: Array<[string, string]> = [];
+                        const pngTextEntries: Array<[string, string]> = [];
+                        const leftoverEntries: Array<[string, string]> = [];
 
-                          Object.entries(meta).forEach(([k, v]) => {
-                            const kLower = k.toLowerCase();
-                            if (kLower.includes("gps") || kLower.includes("latitude") || kLower.includes("longitude") || kLower.includes("coordinate")) {
-                              gpsEntries.push([k, String(v)]);
-                            } else if (kLower.includes("c2pa") || kLower.includes("credentials") || kLower.includes("signature") || kLower.includes("manifest")) {
-                              c2paEntries.push([k, String(v)]);
-                            } else if (kLower.includes("xmp") || kLower.includes("creator") || kLower.includes("instance") || kLower.includes("adobe") || kLower.includes("history")) {
-                              xmpEntries.push([k, String(v)]);
-                            } else if (kLower.includes("prompt") || kLower.includes("parameters") || kLower.includes("negative") || kLower.includes("generation")) {
-                              pngTextEntries.push([k, String(v)]);
-                            } else if (
-                              kLower.includes("make") || kLower.includes("model") || kLower.includes("software") || 
-                              kLower.includes("exif") || kLower.includes("aperture") || kLower.includes("fnumber") || 
-                              kLower.includes("iso") || kLower.includes("exposure") || kLower.includes("lens") || kLower.includes("datetime")
-                            ) {
-                              exifEntries.push([k, String(v)]);
-                            } else {
-                              leftoverEntries.push([k, String(v)]);
-                            }
-                          });
+                        Object.entries(meta).forEach(([k, v]) => {
+                          const kLower = k.toLowerCase();
+                          if (kLower.includes("gps") || kLower.includes("latitude") || kLower.includes("longitude") || kLower.includes("coordinate")) {
+                            gpsEntries.push([k, String(v)]);
+                          } else if (kLower.includes("c2pa") || kLower.includes("credentials") || kLower.includes("signature") || kLower.includes("manifest")) {
+                            c2paEntries.push([k, String(v)]);
+                          } else if (kLower.includes("xmp") || kLower.includes("creator") || kLower.includes("instance") || kLower.includes("adobe") || kLower.includes("history")) {
+                            xmpEntries.push([k, String(v)]);
+                          } else if (kLower.includes("prompt") || kLower.includes("parameters") || kLower.includes("negative") || kLower.includes("generation")) {
+                            pngTextEntries.push([k, String(v)]);
+                          } else if (
+                            kLower.includes("make") || kLower.includes("model") || kLower.includes("software") || 
+                            kLower.includes("exif") || kLower.includes("aperture") || kLower.includes("fnumber") || 
+                            kLower.includes("iso") || kLower.includes("exposure") || kLower.includes("lens") || kLower.includes("datetime")
+                          ) {
+                            exifEntries.push([k, String(v)]);
+                          } else {
+                            leftoverEntries.push([k, String(v)]);
+                          }
+                        });
 
-                          // All 4 diagnostic columns
-                          const pillars = [
-                            {
-                              id: "exif_gps",
-                              label: "EXIF 设备标头 & GPS 空间定位",
-                              present: hasExif || gpsEntries.length > 0,
-                              entries: [...exifEntries, ...gpsEntries],
-                              threatText: "EXIF & GPS 设备与位置残留",
-                              desc: "EXIF 记录拍摄相机的具体品牌、物理镜头、拍摄快门物理状态及精确定位地理卫星坐标。平台的大数据风控能通过这些物理签名构建机身数据库并交叉查验异地发图（如IP属地与快门所在地不符），从而导致限流或判定非原创发布。",
-                              advise: "💡 防封避障建议：物理清洗会100%过滤全部设备和定位特征，阻断定位交叉关联，使其安全发布。",
-                              purifiedText: "✨ EXIF / GPS 已完全清除，坐标已100%物理抹平脱离追踪。"
-                            },
-                            {
-                              id: "c2pa",
-                              label: "C2PA 安全数字版权证书签名",
-                              present: hasC2pa,
-                              entries: c2paEntries,
-                              threatText: "C2PA 签名/不可篡改证书残留",
-                              desc: "C2PA 是现代 AIGC 和主流专业拍摄设备自动固化的内容凭证数字签名，由于可直接用于追溯原图创作平台，是各大社群对[AI图]打标签或营销压流风控的重灾区指标。",
-                              advise: "💡 防封避障建议：一键高保真重组后可完美截断不留原件哈希树，确保回归第一人称自创天然绿灯分发布局。",
-                              purifiedText: "✨ C2PA 安全防伪指纹及追溯签名已成功破壁物理过滤。"
-                            },
-                            {
-                              id: "xmp",
-                              label: "XMP 创作后期流/工作链指纹",
-                              present: hasXmp,
-                              entries: xmpEntries,
-                              threatText: "XMP 重度二创/创作容器残留",
-                              desc: "XML-like 容器（含 Photoshop / Lightroom 保存特征）内置了对工作层级、编辑器属性和详细修改树的描述。暴露它会被机检系统抓取并容易贴上[非直出原创]的低质二创营销标记。",
-                              advise: "💡 防封避障建议：剔除图像后期工具特有的依赖容器特征，让图片像素结构完全保持天然原生相册直出发图的高净值表现。",
-                              purifiedText: "✨ XMP 修图指纹及专业层特征已完全干净清除。"
-                            },
-                            {
-                              id: "png_text",
-                              label: "PNG / WebP 隐藏描述文本控制块",
-                              present: hasPngText,
-                              entries: pngTextEntries,
-                              threatText: "PNG 附随工作参数/提示词残留",
-                              desc: "内置于存储结构中的文本段储存创作模型流、参数和敏感控制汉字。发布时极易被机检直接判定其带有违禁特征字或商业软件二创特征。",
-                              advise: "💡 防封避障建议：物理去重会碎裂全部底层附随文本和任何不相关隐式注释键值合集，彻底消除此类触发词隐患。",
-                              purifiedText: "✨ PNG 文本数据块与提示词控制段已被 100% 安全过滤。"
-                            }
-                          ];
+                        // All 4 diagnostic columns
+                        const pillars = [
+                          {
+                            id: "exif_gps",
+                            label: "EXIF 设备标头 & GPS 空间定位",
+                            present: hasExif || gpsEntries.length > 0,
+                            entries: [...exifEntries, ...gpsEntries],
+                            threatText: "EXIF & GPS 设备与位置残留",
+                            desc: "EXIF 记录拍摄相机的具体品牌、物理镜头、拍摄快门物理状态及精确定位地理卫星坐标。平台的大数据风控能通过这些物理签名构建机身数据库并交叉查验异地发图（如IP属地与快门所在地不符），从而导致限流或判定非原创发布。",
+                            advise: "💡 防封避障建议：物理清洗会100%过滤全部设备和定位特征，阻断定位交叉关联，使其安全发布。",
+                            purifiedText: "✨ EXIF / GPS 已完全清除，坐标已100%物理抹平脱离追踪。"
+                          },
+                          {
+                            id: "c2pa",
+                            label: "C2PA 安全数字版权证书签名",
+                            present: hasC2pa,
+                            entries: c2paEntries,
+                            threatText: "C2PA 签名/不可篡改证书残留",
+                            desc: "C2PA 是现代 AIGC 和主流专业拍摄设备自动固化的内容凭证数字签名，由于可直接用于追溯原图创作平台，是各大社群对[AI图]打标签或营销压流风控的重灾区指标。",
+                            advise: "💡 防封避障建议：一键高保真重组后可完美截断不留原件哈希树，确保回归第一人称自创天然绿灯分发布局。",
+                            purifiedText: "✨ C2PA 安全防伪指纹及追溯签名已成功破壁物理过滤。"
+                          },
+                          {
+                            id: "xmp",
+                            label: "XMP 创作后期流/工作链指纹",
+                            present: hasXmp,
+                            entries: xmpEntries,
+                            threatText: "XMP 重度二创/创作容器残留",
+                            desc: "XML-like 容器（含 Photoshop / Lightroom 保存特征）内置了对工作层级、编辑器属性 and 详细修改树的描述。暴露它会被机检系统抓取并容易贴上[非直出原创]的低质二创营销标记。",
+                            advise: "💡 防封避障建议：剔除图像后期工具特有的依赖容器特征，让图片像素结构完全保持天然原生相册直出发图的高净值表现。",
+                            purifiedText: "✨ XMP 修图指纹及专业层特征已完全干净清除。"
+                          },
+                          {
+                            id: "png_text",
+                            label: "PNG / WebP 隐藏描述文本控制块",
+                            present: hasPngText,
+                            entries: pngTextEntries,
+                            threatText: "PNG 附随工作参数/提示词残留",
+                            desc: "内置于存储结构中的文本段储存创作模型流、参数和敏感控制汉字。发布时极易被机检直接判定其带有违禁特征字或商业软件二创特征。",
+                            advise: "💡 防封避障建议：物理去重会碎裂全部底层附随文本和任何不相关隐式注释键值合集，彻底消除此类触发词隐患。",
+                            purifiedText: "✨ PNG 文本数据块与提示词控制段已被 100% 安全过滤。"
+                          }
+                        ];
 
-                          return (
-                            <>
-                              {pillars.map((item) => {
-                                const status = isDone ? "purified" : (item.present ? "dirty" : "clean");
-                                return (
-                                  <div key={item.id} className={`border rounded-2xl text-2xs p-4 flex flex-col justify-between transition-all leading-normal duration-200 ${
-                                    status === "purified"
-                                      ? "bg-emerald-50/20 border-emerald-150/85 text-emerald-950"
-                                      : status === "dirty"
-                                      ? "bg-rose-50/25 border-rose-150 text-rose-950"
-                                      : "bg-slate-50/50 border-slate-150/70 text-slate-800"
-                                  }`}>
-                                    {/* Header Status */}
-                                    <div>
-                                      <div className="flex items-center justify-between gap-1.5 mb-2 pb-2 border-b border-dashed border-slate-200/50">
-                                        <span className="font-extrabold text-2xs flex items-center gap-1.5">
-                                          <span className={`w-2 h-2 rounded-full ${
-                                            status === "purified" ? "bg-emerald-500 animate-pulse" : (status === "dirty" ? "bg-rose-500 animate-pulse" : "bg-slate-400")
-                                          }`} />
-                                          {item.label}
-                                        </span>
-                                        <span className={`text-[8px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded leading-none ${
-                                          status === "purified"
-                                            ? "bg-emerald-100 text-emerald-700"
-                                            : status === "dirty"
-                                            ? "bg-rose-100 text-rose-700"
-                                            : "bg-slate-200/80 text-slate-500"
-                                        }`}>
-                                          {status === "purified" ? "已完美物理净化" : (status === "dirty" ? "检测到特征" : "安全无残留")}
-                                        </span>
-                                      </div>
-
-                                      {/* Core Principle / Science */}
-                                      <p className="text-slate-500 text-3xs leading-relaxed font-sans font-medium mb-3">
-                                        <span className="font-extrabold text-slate-700 block mb-0.5">🔬 风控避障科学原理：</span>
-                                        {item.desc}
-                                      </p>
+                        return (
+                          <>
+                            {pillars.map((item) => {
+                              const status = isDone ? "purified" : (item.present ? "dirty" : "clean");
+                              return (
+                                <div key={item.id} className={`border rounded-2xl text-2xs p-4 flex flex-col justify-between transition-all leading-normal duration-200 ${
+                                  status === "purified"
+                                    ? "bg-emerald-50/20 border-emerald-150/85 text-emerald-950"
+                                    : status === "dirty"
+                                    ? "bg-rose-50/25 border-rose-150 text-rose-955 shadow-xs"
+                                    : "bg-slate-50/50 border-slate-150/70 text-slate-800"
+                                }`}>
+                                  {/* Header Status */}
+                                  <div>
+                                    <div className="flex items-center justify-between gap-1.5 mb-2 pb-2 border-b border-dashed border-slate-200/50">
+                                      <span className="font-extrabold text-2xs flex items-center gap-1.5">
+                                        <span className={`w-2 h-2 rounded-full ${
+                                          status === "purified" ? "bg-emerald-500 animate-pulse" : (status === "dirty" ? "bg-rose-500 animate-pulse" : "bg-slate-400")
+                                        }`} />
+                                        {item.label}
+                                      </span>
+                                      <span className={`text-[8px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded leading-none ${
+                                        status === "purified"
+                                          ? "bg-emerald-100 text-emerald-700"
+                                          : status === "dirty"
+                                          ? "bg-rose-100 text-rose-700"
+                                          : "bg-slate-200/80 text-slate-500"
+                                      }`}>
+                                        {status === "purified" ? "已完美物理净化" : (status === "dirty" ? "检测到特征" : "安全无残留")}
+                                      </span>
                                     </div>
 
-                                    {/* Mid Details / Dynamic Extraction (ONLY IF DIRTY & NOT DONE) */}
-                                    <div>
-                                      {status === "dirty" && !isDone && item.entries.length > 0 && (
-                                        <div className="mb-3 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl p-3 font-mono text-[10px] space-y-1 max-h-32 overflow-y-auto w-full break-all shadow-inner">
-                                          <span className="text-rose-400 font-extrabold block text-3xs border-b border-white/5 pb-1 mb-1 leading-none">
-                                            🎯 触发敏感元字段 ({item.entries.length}项)
-                                          </span>
-                                          {item.entries.map(([k, v]) => (
-                                            <div key={k} className="leading-tight text-3xs">
-                                              <span className="text-amber-400 font-semibold">{k}:</span>{" "}
-                                              <span className="text-slate-200 whitespace-pre-wrap">{v}</span>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      )}
+                                    {/* Core Principle / Science */}
+                                    <p className="text-slate-500 text-3xs leading-relaxed font-sans font-medium mb-3">
+                                      <span className="font-extrabold text-slate-700 block mb-0.5">🔬 风控避障科学原理：</span>
+                                      {item.desc}
+                                    </p>
+                                  </div>
 
-                                      {status === "purified" && (
-                                        <div className="mb-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 rounded-xl p-2.5 font-sans font-bold text-3xs leading-relaxed">
-                                          {item.purifiedText}
-                                        </div>
-                                      )}
-
-                                      {/* Operational advice (避障建议) */}
-                                      <div className={`p-2.5 rounded-xl text-3xs font-medium border font-sans ${
-                                        status === "purified" 
-                                          ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-950"
-                                          : status === "dirty"
-                                          ? "bg-rose-500/5 border-rose-500/10 text-rose-950"
-                                          : "bg-slate-500/5 border-slate-500/10 text-slate-600"
-                                      }`}>
-                                        {item.advise}
+                                  {/* Mid Details / Dynamic Extraction (ONLY IF DIRTY & NOT DONE) */}
+                                  <div>
+                                    {status === "dirty" && !isDone && item.entries.length > 0 && (
+                                      <div className="mb-3 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl p-3 font-mono text-[10px] space-y-1 max-h-32 overflow-y-auto w-full break-all shadow-inner">
+                                        <span className="text-rose-400 font-extrabold block text-3xs border-b border-white/5 pb-1 mb-1 leading-none">
+                                          🎯 触发敏感元字段 ({item.entries.length}项)
+                                        </span>
+                                        {item.entries.map(([k, v]) => (
+                                          <div key={k} className="leading-tight text-3xs">
+                                            <span className="text-amber-400 font-semibold">{k}:</span>{" "}
+                                            <span className="text-slate-200 whitespace-pre-wrap">{v}</span>
+                                          </div>
+                                        ))}
                                       </div>
+                                    )}
+
+                                    {status === "purified" && (
+                                      <div className="mb-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 rounded-xl p-2.5 font-sans font-bold text-3xs leading-relaxed">
+                                        {item.purifiedText}
+                                      </div>
+                                    )}
+
+                                    {/* Operational advice (避障建议) */}
+                                    <div className={`p-2.5 rounded-xl text-3xs font-medium border font-sans ${
+                                      status === "purified" 
+                                        ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-950"
+                                        : status === "dirty"
+                                        ? "bg-rose-500/5 border-rose-500/10 text-rose-955"
+                                        : "bg-slate-500/5 border-slate-500/10 text-slate-600"
+                                    }`}>
+                                      {item.advise}
                                     </div>
                                   </div>
-                                );
-                              })}
-
-                              {/* Collapse list for other system metadata parameters if present and not processed */}
-                              {leftoverEntries.length > 0 && !isDone && (
-                                <div className="col-span-1 md:col-span-2 bg-slate-50/50 border border-slate-150/70 rounded-2xl p-4 transition-all duration-200">
-                                  <details className="group">
-                                    <summary className="text-3xs font-extrabold text-slate-500 cursor-pointer flex items-center justify-between select-none font-sans">
-                                      <span className="flex items-center gap-1">
-                                        <span className="w-1.5 h-3 bg-slate-400 rounded-xs" />
-                                        <span>⚙️ 其它解密附属底层无害物理段解析清单 ({leftoverEntries.length} 项)</span>
-                                      </span>
-                                      <span className="text-2xs group-open:rotate-180 transition-transform duration-200">▼</span>
-                                    </summary>
-                                    <div className="mt-3 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl p-3 font-mono text-[10px] space-y-1.5 shadow-inner max-h-40 overflow-y-auto">
-                                      {leftoverEntries.map(([k, v]) => (
-                                        <div key={k} className="leading-tight text-3xs">
-                                          <span className="text-slate-400 font-semibold">{k}:</span>{" "}
-                                          <span className="text-slate-300 whitespace-pre-wrap leading-normal break-all">{v}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </details>
                                 </div>
-                              )}
-                            </>
-                          );
-                        })()}
-                      </div>
-                    </div>
+                              );
+                            })}
 
+                            {/* Collapse list for other system metadata parameters if present and not processed */}
+                            {leftoverEntries.length > 0 && !isDone && (
+                              <div className="bg-slate-50/50 border border-slate-150/70 rounded-2xl p-4 transition-all duration-200">
+                                <details className="group">
+                                  <summary className="text-3xs font-extrabold text-slate-500 cursor-pointer flex items-center justify-between select-none font-sans">
+                                    <span className="flex items-center gap-1">
+                                      <span className="w-1.5 h-3 bg-slate-400 rounded-xs" />
+                                      <span>⚙️ 其它解密附属底层无害物理段解析清单 ({leftoverEntries.length} 项)</span>
+                                    </span>
+                                    <span className="text-2xs group-open:rotate-180 transition-transform duration-200">▼</span>
+                                  </summary>
+                                  <div className="mt-3 bg-slate-900 border border-slate-800 text-slate-300 rounded-xl p-3 font-mono text-[10px] space-y-1.5 shadow-inner max-h-40 overflow-y-auto">
+                                    {leftoverEntries.map(([k, v]) => (
+                                      <div key={k} className="leading-tight text-3xs">
+                                        <span className="text-slate-400 font-semibold">{k}:</span>{" "}
+                                        <span className="text-slate-300 whitespace-pre-wrap leading-normal break-all">{v}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </details>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
+                    </div>
                   </div>
 
                 </div>
 
               </div>
 
-                {/* Modal Footer Controls */}
-                <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3 flex-wrap">
+              {/* Modal Footer Controls */}
+              <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3 flex-wrap">
+                <button 
+                  onClick={() => setSelectedImageForView(null)}
+                  className="px-4 py-2 border border-slate-250 text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-semibold active:scale-95 duration-100 cursor-pointer"
+                >
+                  关闭报告
+                </button>
+
+                {(!selectedImageForView.cleanedUrl) ? (
                   <button 
-                    onClick={() => setSelectedImageForView(null)}
-                    className="px-4 py-2 border border-slate-250 text-slate-700 hover:bg-slate-100 rounded-xl text-xs font-semibold active:scale-95 duration-100 cursor-pointer"
+                    onClick={async () => {
+                      try {
+                        const tempObj = await cleanMetadataLocal(selectedImageForView.id);
+                        // Refresh selected view reference safely
+                        const liveObj = newImageStatesRef.current.find(g => g.id === selectedImageForView.id);
+                        if (liveObj) {
+                          setSelectedImageForView(liveObj);
+                        }
+                      } catch (_) {}
+                    }}
+                    className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-500/10 active:scale-95 duration-100 inline-flex items-center gap-1.5 cursor-pointer"
                   >
-                    关闭报告
+                    <Shield className="w-3.5 h-3.5" />
+                    立即执行本地物理清洗脱敏
                   </button>
+                ) : (
+                  <button 
+                    onClick={() => downloadSingleImage(selectedImageForView)}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-500/10 active:scale-95 duration-100 inline-flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    下载干净脱敏包
+                  </button>
+                )}
+              </div>
 
-                  {(!selectedImageForView.cleanedUrl) ? (
-                    <button 
-                      onClick={async () => {
-                        try {
-                          const tempObj = await cleanMetadataLocal(selectedImageForView.id);
-                          // Refresh selected view reference safely
-                          const liveObj = newImageStatesRef.current.find(g => g.id === selectedImageForView.id);
-                          if (liveObj) {
-                            setSelectedImageForView(liveObj);
-                          }
-                        } catch (_) {}
-                      }}
-                      className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-500/10 active:scale-95 duration-100 inline-flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Shield className="w-3.5 h-3.5" />
-                      立即执行本地物理清洗脱敏
-                    </button>
-                  ) : (
-                    <button 
-                      onClick={() => downloadSingleImage(selectedImageForView)}
-                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-500/10 active:scale-95 duration-100 inline-flex items-center gap-1.5 cursor-pointer"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      下载干净脱敏包
-                    </button>
-                  )}
-                </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
-
-      </div>
-    );
-  }
+    </div>
+  );
+}
